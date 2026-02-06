@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ziggy83pl.github.io/ArkadiuszMalinowski/sitemap.xml
