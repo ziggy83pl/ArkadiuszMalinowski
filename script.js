@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (navigator.share) {
                 navigator.share({
                     title: document.title,
-                    text: 'Zamów usługi koparki',
+                    text: 'Profesjonalne usługi koparkowe i roboty ziemne. Sprawdź ofertę!',
                     url: window.location.href
                 }).catch(console.error);
             } else {
