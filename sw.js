@@ -10,6 +10,8 @@ const ASSETS = [
 
 self.addEventListener('install', (e) => {
     e.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)));
+    // Natychmiast przejdź do aktywacji bez czekania
+    self.skipWaiting();
 });
 
 // Aktywacja: usuwanie starych cache
@@ -23,10 +25,25 @@ self.addEventListener('activate', (e) => {
             );
         })
     );
+    // Przejmij kontrolę nad wszystkimi otwartymi kartami
+    self.clients.claim();
 });
 
 self.addEventListener('fetch', (e) => {
-    e.respondWith(caches.match(e.request).then((response) => response || fetch(e.request)));
+    // Strategia "network first" dla HTML (index.html), "cache first" dla assets
+    const isHtmlRequest = e.request.destination === 'document' || e.request.url.includes('.html');
+    
+    if (isHtmlRequest) {
+        // HTML: spróbuj sieci najpierw, fallback do cache
+        e.respondWith(
+            fetch(e.request).catch(() => caches.match(e.request))
+        );
+    } else {
+        // Assets (JS, CSS, images): cache first, fallback do sieci
+        e.respondWith(
+            caches.match(e.request).then((response) => response || fetch(e.request))
+        );
+    }
 });
 
 self.addEventListener('message', (event) => {
