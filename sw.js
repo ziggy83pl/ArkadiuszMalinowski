@@ -1,4 +1,4 @@
-const CACHE_NAME = 'arek-v8';
+const CACHE_NAME = 'arek-v10';
 const ASSETS = [
     './',
     './index.html',
